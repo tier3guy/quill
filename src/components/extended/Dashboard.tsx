@@ -1,16 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Button } from "../ui/button";
 import { useAuth } from "@clerk/nextjs";
+import React, { useState } from "react";
 import { trpc } from "@/app/_trpc/client";
 import Skeleton from "react-loading-skeleton";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
 import UploadButton from "@/components/extended/UploadButton";
 import { Ghost, Loader2, MessageSquare, Plus, Trash } from "lucide-react";
 
-const Dashboard = () => {
+const Dashboard = ({
+  subscriptionPlan,
+}: {
+  subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>;
+}) => {
   const { isLoaded } = useAuth();
   if (!isLoaded) return null;
 
@@ -37,7 +42,7 @@ const Dashboard = () => {
     <main className="mx-auto md:py-5">
       <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
         <h1 className="mb-3 font-bold text-5xl text-gray-900">My Files</h1>
-        <UploadButton />
+        <UploadButton isSubscribed={subscriptionPlan.isSubscribed} />
       </div>
 
       {isLoading ? (

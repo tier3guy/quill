@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 import Dashboard from "@/components/extended/Dashboard";
 import MaxWidthWrapper from "@/components/extended/MaxWidthWrapper";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 const DashboardPage = async () => {
   const user = await currentUser();
@@ -14,9 +15,11 @@ const DashboardPage = async () => {
   });
   if (!dbUser) redirect("/auth-callback?origin=dashboard");
 
+  const subscriptionPlan = await getUserSubscriptionPlan();
+
   return (
     <MaxWidthWrapper>
-      <Dashboard />
+      <Dashboard subscriptionPlan={subscriptionPlan} />
     </MaxWidthWrapper>
   );
 };
