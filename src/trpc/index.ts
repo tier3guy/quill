@@ -156,9 +156,6 @@ export const appRouter = router({
     }),
   createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
     const { userId } = ctx;
-
-    const billingUrl = absoluteUrl("/dashboard/billing");
-
     if (!userId) throw new TRPCError({ code: "UNAUTHORIZED" });
 
     const dbUser = await db.user.findFirst({
@@ -166,8 +163,10 @@ export const appRouter = router({
         id: userId,
       },
     });
-
     if (!dbUser) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+    const billingUrl = absoluteUrl("/dashboard/billing");
+    console.log(billingUrl);
 
     const subscriptionPlan = await getUserSubscriptionPlan();
 
@@ -183,7 +182,7 @@ export const appRouter = router({
     const stripeSession = await stripe.checkout.sessions.create({
       success_url: billingUrl,
       cancel_url: billingUrl,
-      payment_method_types: ["card", "paypal"],
+      payment_method_types: ["card"],
       mode: "subscription",
       billing_address_collection: "auto",
       line_items: [

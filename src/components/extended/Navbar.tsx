@@ -45,6 +45,12 @@ const Navbar = () => {
             ) : (
               <>
                 <Link href={"/dashboard"}>Dashboard</Link>
+                <Link
+                  href={"/pricing"}
+                  className="hover:bg-gray-100 px-3 py-1 rounded-sm"
+                >
+                  Pricing
+                </Link>
                 <UserButton afterSignOutUrl="/" />
               </>
             )}
