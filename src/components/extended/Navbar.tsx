@@ -28,8 +28,8 @@ const Navbar = async () => {
             {!user ? (
               <>
                 <Link href="/pricing">Pricing</Link>
-                <SignInButton>Sign in</SignInButton>
-                <SignUpButton>
+                <SignInButton afterSignInUrl="/dashboard">Sign in</SignInButton>
+                <SignUpButton afterSignUpUrl="/dashboard">
                   <div className="flex items-center cursor-pointer">
                     Get started <ArrowRight className="ml-1.5 h-5 w-5" />
                   </div>
